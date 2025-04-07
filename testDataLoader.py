@@ -7,7 +7,7 @@ print(PromptDataset)
 
 dataset = PromptDataset(
     csv_file="data/csv/utk_train_balanced_with_prompts.csv",
-    img_dir="data/UTKFace/cropped_clean"
+    img_dir="data/croppedUTKFace"
 )
 
 # Example: fetch a single item
