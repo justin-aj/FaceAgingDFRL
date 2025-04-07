@@ -4,6 +4,24 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
 
+"""
+This class is what the training loop will use to:
+
+Load your cropped face images from data/croppedUTKFace/
+
+Load the text prompt from utk_train_balanced_with_prompts.csv
+
+Apply transforms (resize, normalize, convert to tensor)
+
+Return:
+
+python
+Copy
+Edit
+(image_tensor, prompt_text)
+Exactly what Stable Diffusion needs during fine-tuning.
+"""
+
 class PromptDataset(Dataset):
     def __init__(self, csv_file, img_dir):
         """

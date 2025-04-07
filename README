@@ -9,7 +9,7 @@ FOLDERS in DATA:
 
 DATA PREPROCESING: 
 
-1. Crop all images and discard blurry ones from UTkFaces
+1. Crop all images and discard blurry ones from UTkFaces.
 
 2. Create 150 subset of high-quality images for pretraining(In Section 4: Experiments, they say: 150 training images are sampled from FFHQ-Aging...
 We used the central age of the true label age group as α in the finetuning prompt.). Not using more images due to resource constraints!!
@@ -32,25 +32,55 @@ Asian	0s, 10s, ..., 70s+	up to 35
 Indian	0s, 10s, ..., 70s+	up to 35
 Other	0s, 10s, ..., 70s+	up to 35
 
-3. Generating age conditioned prompts(done in FADING research paper)- but we can try more with race if we have time
+3. Generating age conditioned prompts in csv(done in FADING research paper)- but we can try more with race if we have time
+
+
+4. Load image data and tensors into PromptDataset
+
 
 IMPLEMENTING:
 
-1. This class is what your training loop will use to:
+1. Load Pretrained Stable Diffusion
+Use diffusers from Hugging Face to load:
 
-Load your cropped face images from data/croppedUTKFace/
+    StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
 
-Load the text prompt from utk_train_balanced_with_prompts.csv
+Extract and fine-tune only the UNet (just like in the FADING paper)
 
-Apply transforms (resize, normalize, convert to tensor)
 
-Return:
+2. Fine-Tuning (Double Prompt Scheme)
+For each image:
 
-python
-Copy
-Edit
-(image_tensor, prompt_text)
-Exactly what Stable Diffusion needs during fine-tuning.
+Use two prompts:
+
+P_α = "a photo of a 42 year old person" → age prompt
+
+P = "a photo of a person" → neutral prompt
+
+      Optimize for: L = ||SD(Pα) - GT|| - ||SD(P) - GT||
+
+→ This helps the model learn aging features while preserving identity
+
+
+3. Save The Fine-Tuned Model
+Save only the UNet weights (you don’t need to retrain the text encoder or VAE)
+
+This becomes the new specialized FADING model.
+
+
+4.  Inference & Age Editing
+Use null-text inversion to embed a face into latent space
+
+Use prompt editing to apply age changes:
+Original prompt: "a photo of a 40 year old person"
+Edited prompt:   "a photo of a 70 year old person"
+Generate aged images
+
+
+Testing project results: What can be the quatifiable results in the project-??
+
+1. Using a pretrained age determination model-??
+2. What else-?
 
 
 
