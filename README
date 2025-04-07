@@ -1,0 +1,60 @@
+ 
+FOLDERS in DATA:
+
+1. cropped UTKFace - all the cropped 512 * 512 images of UTK face.
+2. csv- all csv files needed for the project.
+3. Subset 150- final high qality 150 images for pre-training.
+4. UTKface- original UTKface images.
+
+
+DATA PREPROCESING: 
+
+1. Crop all images and discard blurry ones from UTkFaces
+
+2. Create 150 subset of high-quality images for pretraining(In Section 4: Experiments, they say: 150 training images are sampled from FFHQ-Aging...
+We used the central age of the true label age group as α in the finetuning prompt.). Not using more images due to resource constraints!!
+
+Example Target Age Groups used for our project for finetuning pre-trained model
+0–9 → "0s"
+
+10–19 → "10s"
+
+...
+
+70+ → "70s"
+
+#final subset of 150 images:
+
+Race	Age Groups Covered	Sample Count
+Black	0s, 10s, ..., 70s+	up to 35
+White	0s, 10s, ..., 70s+	up to 35
+Asian	0s, 10s, ..., 70s+	up to 35
+Indian	0s, 10s, ..., 70s+	up to 35
+Other	0s, 10s, ..., 70s+	up to 35
+
+3. Generating age conditioned prompts(done in FADING research paper)- but we can try more with race if we have time
+
+IMPLEMENTING:
+
+1. This class is what your training loop will use to:
+
+Load your cropped face images from data/croppedUTKFace/
+
+Load the text prompt from utk_train_balanced_with_prompts.csv
+
+Apply transforms (resize, normalize, convert to tensor)
+
+Return:
+
+python
+Copy
+Edit
+(image_tensor, prompt_text)
+Exactly what Stable Diffusion needs during fine-tuning.
+
+
+
+
+
+
+ 
