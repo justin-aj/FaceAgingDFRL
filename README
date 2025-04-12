@@ -87,7 +87,7 @@ Testing project results: What can be the quatifiable results in the project-??
 As detailed in Section 4 of the paper, the authors evaluated their aging results using the following metrics:
 
 1. Mean Absolute Error (MAE)
-Measures the difference between the predicted age (via Face++ age estimator) and the target prompt age.
+Measures the difference between the predicted age (via Face++ age estimator- no , insight face -yes) and the target prompt age.
 
 Lower MAE = better alignment between prompt and generated face.
 
