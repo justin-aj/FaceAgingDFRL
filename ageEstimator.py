@@ -44,7 +44,7 @@ def estimate_age_from_cropped(img_path):
 
     return age, gender
 
-# Example usage:
+# Example usage and testing:
 image_path= "data/croppedUTKFace/40_0_0_20170104204933500.jpg"
 age, gender = estimate_age_from_cropped(image_path)
 print(f"Predicted age: {age}, gender: {gender}")
