@@ -14,7 +14,7 @@ import cv2
 import numpy as np
 from insightface.app import FaceAnalysis
 
-# Initialize InsightFace model
+
 app = FaceAnalysis(name='buffalo_l', providers=['CPUExecutionProvider'])
 app.prepare(ctx_id=0)
 genderage_model = app.models.get('genderage')
@@ -34,17 +34,17 @@ def estimate_age_from_cropped(img_path):
     input_name = session.get_inputs()[0].name
     output = session.run(None, {input_name: blob})[0]
 
-    # Extract values
+    
     female_score = output[0][0]
     male_score = output[0][1]
-    age_score = output[0][2]  # normalized age value in [0, 1]
+    age_score = output[0][2]  
 
     gender = "male" if male_score > female_score else "female"
     age = age_score * 100
 
     return age, gender
 
-# Example usage and testing:
+#Testing:
 image_path= "data/croppedUTKFace/40_0_0_20170104204933500.jpg"
 age, gender = estimate_age_from_cropped(image_path)
 print(f"Predicted age: {age}, gender: {gender}")
