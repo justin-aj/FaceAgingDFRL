@@ -20,7 +20,7 @@ for fname in os.listdir(src_dir):
             print(f"❌ Low confidence for {fname}, skipping")
             continue
 
-        # Check face box size
+        
         x1, y1, x2, y2 = box[0]
         face_width = x2 - x1
         face_height = y2 - y1
@@ -28,7 +28,7 @@ for fname in os.listdir(src_dir):
             print(f"❌ Small face in {fname}, skipping")
             continue
 
-        # Save high-confidence, large-enough faces
+        
         mtcnn(img, save_path=os.path.join(dst_dir, fname))
 
     except Exception as e:

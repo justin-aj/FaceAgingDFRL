@@ -7,16 +7,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Hyperparameters
-image_size = 128  # Higher resolution
+image_size = 128
 num_steps = 100
 batch_size = 32
-epochs = 20  # More training
+epochs = 20  
 learning_rate = 0.0002
 
 # Device configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Enhanced U-Net style Diffusion Model
 class UNet(nn.Module):
     def __init__(self):
         super(UNet, self).__init__()

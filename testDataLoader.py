@@ -10,16 +10,16 @@ dataset = PromptDataset(
     img_dir="data/croppedUTKFace"
 )
 
-# Example: fetch a single item
-img, prompt = dataset[0]
-print(prompt)  # e.g., "a photo of a 45 year old person"
 
-# Load into DataLoader
+img, prompt = dataset[0]
+print(prompt) 
+
+
 dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
 
 
 for images, prompts in dataloader:
-    print(images.shape)   # torch.Size([4, 3, 512, 512])
-    print(prompts)        # list of 4 text prompts
+    print(images.shape)   
+    print(prompts)       
     break
 

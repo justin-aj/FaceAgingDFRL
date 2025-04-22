@@ -7,14 +7,12 @@ labels_csv_path = "data/csv/utk_labels.csv"
 cropped_dir = "data/croppedUTKFace"
 output_csv_path = "data/subset150/utk_train_balanced.csv"
 
-# Load label CSV
+
 df = pd.read_csv(labels_csv_path)
 
-# Keep only entries with successful face crops
 available_crops = set(os.listdir(cropped_dir))
 df = df[df['filename'].isin(available_crops)].copy()
 
-# Extract race from filename (format: age_gender_race_...)
 def extract_race(filename):
     try:
         return int(filename.split("_")[2])
@@ -49,16 +47,17 @@ Copy
 Edit
 5, 15, 25, 35, 45, 55, 65, 75
 """
+
 df['age_group'] = (df['age'] // 10) * 10
 
-# Blur detection
+
 def is_blurry(img_path, threshold=100.0):
     image = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     if image is None:
         return True
     return cv2.Laplacian(image, cv2.CV_64F).var() < threshold
 
-# Filter out blurry images
+
 blur_checked = []
 for _, row in df.iterrows():
     img_path = os.path.join(cropped_dir, row['filename'])
@@ -71,6 +70,6 @@ df_clean = pd.DataFrame(blur_checked)
 df_balanced = df_clean.groupby(['race_str', 'age_group']).apply(lambda x: x.sample(min(5, len(x)), random_state=42))
 df_balanced = df_balanced.reset_index(drop=True)
 
-# Save final balanced dataset
+# Save final balanced dataset for testing
 df_balanced.to_csv(output_csv_path, index=False)
 df_balanced.groupby("race_str").size()
